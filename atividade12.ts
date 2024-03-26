@@ -70,6 +70,10 @@ adicionarCor(cat['color'])
     parâmetro é um objeto;
   - Utilize a função para exibir no console se "cat" é um objeto.
 */
+function isObject(value: any): boolean {
+  return typeof value === 'object' && value !== null;
+}
+console.log(isObject(cat))
 
 /*
   07
@@ -99,17 +103,14 @@ mensagem()
     está funcionando corretamente. Mas ela pode ser melhorada;
   - Como você refatoraria esta função?
 */
-
-const isAnSUV = car => {
-    if (car === 'Honda HR-V' || car === 'Jeep Renegade' || car === 'Ford EcoSport' || car === 'Hyundai iX35') {
-        return true
-    }
-
-    return false
+const isAnSUV = (car: string): boolean => {
+    const suvModels: string[] = ['Honda HR-V', 'Jeep Renegade', 'Ford EcoSport', 'Hyundai iX35'];
+    return suvModels.includes(car);
 }
 
-// console.log(isAnSUV('Honda Civic'))
-// console.log(isAnSUV('Ford EcoSport'))
+console.log(isAnSUV('Honda Civic')); 
+console.log(isAnSUV('Ford EcoSport')); 
+
 
 /*
   09
@@ -123,6 +124,19 @@ const isAnSUV = car => {
     propriedades, retorne a mensagem que a propriedade armazena;
   - Teste a função, exibindo no console a mensagem de cada propriedade.
 */
+function getTypeDescription(type: string): string | undefined {
+    const typeDescriptions: { [key: string]: string } = {
+        null: 'Seta, explicitamente, uma variável sem valor.',
+        undefined: 'Representa um valor não-setado.',
+        object: 'Arrays, Datas, Objetos literais, Funções, etc.'
+    };
+
+    return typeDescriptions[type];
+}
+
+console.log(getTypeDescription('null')); 
+console.log(getTypeDescription('undefined')); 
+console.log(getTypeDescription('object')); 
 
 /*
 
@@ -131,6 +145,7 @@ const isAnSUV = car => {
 - Declare uma constante que recebe o seu nome;
 - Ela deve ter um escopo global.
 */
+
 
 /*
   11
@@ -145,6 +160,15 @@ const isAnSUV = car => {
     defined" será exibido no console;
   - Você sabe por que isso aconteceu?
 */
+function exibirIdade(): number {
+    let minhaIdade: number = 16;
+    console.log("Minha idade é:", minhaIdade);
+    return minhaIdade;
+}
+
+const idadeForaDaFuncao: number = exibirIdade();
+console.log("Idade fora da função:", idadeForaDaFuncao);
+
 
 /*
   12
@@ -163,6 +187,33 @@ const isAnSUV = car => {
     - getColorsMessage, que é um método que retorna a mensagem  
       "O NOME_DO_CARRO está disponível nas cores COR_01, COR_02 e COR_03".
 */
+const car = {
+    name: "",
+    brand: "",
+    colors: [] as string[],
+    isRunning: false,
+    run() {
+        this.isRunning = true;
+        return `O ${this.name} está em movimento`;
+    },
+    stop() {
+        this.isRunning = false;
+        return `O ${this.name} está parado`;
+    },
+    getColorsMessage() {
+        const colorsList = this.colors.join(', ');
+        return `O ${this.name} está disponível nas cores ${colorsList}`;
+    }
+};
+
+
+car.name = "Civic";
+car.brand = "Honda";
+car.colors = ["Preto", "Branco", "Prata"];
+
+console.log(car.run()); 
+console.log(car.stop()); 
+console.log(car.getColorsMessage()); 
 
 /*
   13
@@ -170,25 +221,30 @@ const isAnSUV = car => {
   - Faça o carro andar e exiba no console se ele realmente está em movimento.
 */
 
+console.log(car.run()); 
+
+console.log(`O carro está em movimento? ${car.isRunning ? 'Sim' : 'Não'}`); 
+
 /*
   14
 
   - Faça o carro parar e exiba no console se ele realmente está parado.
 */
-
+console.log(car.stop())
+console.log(`O carro está parado? ${!car.isRunning ? 'Sim' : 'Não'}`);
 /*
   15
 
   - Exiba, no console, a mensagem com as cores do carro.
 */
-
+console.log(car.getColorsMessage());
 /*
   16
 
   - Exiba, no console, a mensagem "O carro é um MARCA_DO_CARRO NOME_DO_CARRO";
   - Utilize a notação de colchetes para acessar as propriedades do carro.
 */
-
+console.log(`O carro é um ${car['brand']} ${car['name']}`);
 /*
   17
   - Aqui vamos simular um sistema de cadastro de um médico que deseja guardar informações sobre os seus pacientes em um hospital
@@ -199,3 +255,56 @@ const isAnSUV = car => {
         'Risco Moderado' caso ele tenha risco de 3 ou 4, e 'Grave risco' caso ele tenha risco de valor igual a 5.
   - Depois imprima um relatório completo sobre os pacientes.
 */
+interface Paciente {
+    nome: string;
+    idade: number;
+    cpf: string;
+    sintoma: string;
+    classificacaoRisco: number;
+    situacaoRisco: string;
+}
+
+function atribuirSituacaoRisco(classificacaoRisco: number): string {
+    if (classificacaoRisco >= 1 && classificacaoRisco <= 2) {
+        return 'Risco leve';
+    } else if (classificacaoRisco >= 3 && classificacaoRisco <= 4) {
+        return 'Risco moderado';
+    } else if (classificacaoRisco === 5) {
+        return 'Grave risco';
+    } else {
+        return 'Situação não definida';
+    }
+}
+
+const bancoDeDadosPacientes: Paciente[] = [
+    { nome: "Paciente 1", idade: 25, cpf: "111.111.111-11", sintoma: "Febre", classificacaoRisco: 2, situacaoRisco: '' },
+    { nome: "Paciente 2", idade: 65, cpf: "222.222.222-22", sintoma: "Tosse", classificacaoRisco: 4, situacaoRisco: '' },
+    { nome: "Paciente 3", idade: 62, cpf: "333.333.333-33", sintoma: "Dor de cabeça", classificacaoRisco: 1, situacaoRisco: '' },
+    { nome: "Paciente 4", idade: 28, cpf: "444.444.444-44", sintoma: "Dor nas articulações", classificacaoRisco: 3, situacaoRisco: '' },
+    { nome: "Paciente 5", idade: 21, cpf: "555.555.555-55", sintoma: "Dor de garganta", classificacaoRisco: 5, situacaoRisco: '' },
+    { nome: "Paciente 6", idade: 34, cpf: "666.666.666-66", sintoma: "Febre", classificacaoRisco: 2, situacaoRisco: '' },
+    { nome: "Paciente 7", idade: 51, cpf: "777.777.777-77", sintoma: "Tosse", classificacaoRisco: 4, situacaoRisco: '' },
+    { nome: "Paciente 8", idade: 19, cpf: "888.888.888-88", sintoma: "Dor de cabeça", classificacaoRisco: 1, situacaoRisco: '' },
+    { nome: "Paciente 9", idade: 22, cpf: "999.999.999-99", sintoma: "Dor nas articulações", classificacaoRisco: 3, situacaoRisco: '' },
+    { nome: "Paciente 10", idade: 60, cpf: "000.000.000-00", sintoma: "Dor de garganta", classificacaoRisco: 5, situacaoRisco: '' },
+    { nome: "Paciente 11", idade: 38, cpf: "123.456.789-01", sintoma: "Febre", classificacaoRisco: 2, situacaoRisco: '' },
+    { nome: "Paciente 12", idade: 48, cpf: "987.654.321-09", sintoma: "Tosse", classificacaoRisco: 4, situacaoRisco: '' },
+    { nome: "Paciente 13", idade: 52, cpf: "111.222.333-44", sintoma: "Dor de cabeça", classificacaoRisco: 1, situacaoRisco: '' },
+    { nome: "Paciente 14", idade: 26, cpf: "555.666.777-88", sintoma: "Dor nas articulações", classificacaoRisco: 3, situacaoRisco: '' },
+    { nome: "Paciente 15", idade: 70, cpf: "999.888.777-66", sintoma: "Dor de garganta", classificacaoRisco: 5, situacaoRisco: '' },
+    { nome: "Paciente 16", idade: 42, cpf: "444.333.222-11", sintoma: "Febre", classificacaoRisco: 2, situacaoRisco: '' },
+    { nome: "Paciente 17", idade: 30, cpf: "987.654.321-09", sintoma: "Tosse", classificacaoRisco: 4, situacaoRisco: '' },
+    { nome: "Paciente 18", idade: 58, cpf: "111.222.333-44", sintoma: "Dor de cabeça", classificacaoRisco: 1, situacaoRisco: '' },
+    { nome: "Paciente 19", idade: 25, cpf: "555.666.777-88", sintoma: "Dor nas articulações", classificacaoRisco: 3, situacaoRisco: '' },
+    { nome: "Paciente 20", idade: 68, cpf: "999.888.777-66", sintoma: "Dor de garganta", classificacaoRisco: 5, situacaoRisco: '' }
+];
+
+bancoDeDadosPacientes.forEach(paciente => {
+    paciente.situacaoRisco = atribuirSituacaoRisco(paciente.classificacaoRisco);
+});
+
+console.log("Relatório completo sobre os pacientes:");
+bancoDeDadosPacientes.forEach(paciente => {
+    console.log(`Nome: ${paciente.nome}, Idade: ${paciente.idade}, CPF: ${paciente.cpf}, Sintoma: ${paciente.sintoma}, Classificação de risco: ${paciente.classificacaoRisco}, Situação de risco: ${paciente.situacaoRisco}`);
+});
+
